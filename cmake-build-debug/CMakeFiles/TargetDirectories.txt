@@ -1,0 +1,3 @@
+C:/Users/matci/Desktop/Gauss20/cmake-build-debug/CMakeFiles/Gauss20.dir
+C:/Users/matci/Desktop/Gauss20/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/matci/Desktop/Gauss20/cmake-build-debug/CMakeFiles/rebuild_cache.dir
