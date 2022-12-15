@@ -228,7 +228,7 @@ void pojedynczyWybor() {
     for(int k=0; k<n-1; k++) {
         int* maxPos = findMax(matrix, n, k, k);
         if(maxPos[0] != maxPos[1] && maxPos[1] != k) {
-            swapColumns(matrix, n, maxPos[1], k);
+            swapRows(matrix, maxPos[1], k);
             int temp = columns[k];
             columns[k] = columns[maxPos[1]];
             columns[maxPos[1]] = temp;
@@ -291,10 +291,10 @@ void pelnyWybor() {
 //            matrix[1] = new double[n+1]{-3, -7.5, 6.5, 0, 17};
 //            matrix[2] = new double[n+1]{-6.25, -12.5, 0.25, 5.25, 24.25};
 //            matrix[3] = new double[n+1]{9, 10, 7, -21, -33};
-            matrix[0] = new double[n+1]{1,1,1,1,2};
-            matrix[1] = new double[n+1]{1,-1,1,1,-2};
-            matrix[2] = new double[n+1]{1,-1,-1,1,-2};
-            matrix[3] = new double[n+1]{2.333333,1,1,-1,5};
+            matrix[0] = new double[n+1]{1,2,-1,2, 0};
+            matrix[1] = new double[n+1]{1, 0, -2, 4, 4};
+            matrix[2] = new double[n+1]{0, -3, 1.5, 7, 0};
+            matrix[3] = new double[n+1]{0, -1, 1, 6, -1};
         }
     } while(!(wybor == 1 || wybor == 2));
 
