@@ -10,7 +10,7 @@ void roundMatrix(double **matrix, int n);
 double* postepowanieOdwrotne(double **matrix, int n);
 int* findMax(double **matrix, int n, int x, int y);
 void swapColumns(double **matrix, int n, int column1, int column2);
-void swapRows(double **matrix, int n, int row1, int row2);
+void swapRows(double **matrix, int row1, int row2);
 void podstawowy();
 void pojedynczyWybor();
 void pelnyWybor();
@@ -91,7 +91,7 @@ void printResultInOrder(double *array, int n, int* order) {
     for(int i=0; i<n; i++) {
         for (int j = 0; j < n; j++) {
             if (order[j] == i) {
-                cout << " x" << (i + 1) << " = " << array[order[j]] << "\n";
+                cout << " x" << (i + 1) << " = " << array[j] << "\n";
                 break;
             }
         }
@@ -107,13 +107,12 @@ void printMatrix(double **matrix, int n) {
             maxLength = maxLength > len ? maxLength : len;
         }
     }
-
     for(int i=0; i<n; i++) {
         cout << "|";
         for(int j=0; j<n+1; j++) {
-            cout << " " <<matrix[i][j] << "\t";
-//            for(int k=0; k<maxLength-lengthOfDouble(matrix[i][j])+1; k++)
-//                cout << " ";
+            cout << " " <<matrix[i][j];
+            for(int k=0; k<maxLength-lengthOfDouble(matrix[i][j])+1; k++)
+                cout << " ";
         }
         cout << " |" << endl;
     }
@@ -134,8 +133,8 @@ void podstawowy() {
             do {
                 cout << "Podaj ilosc zmiennych w ukladzie: ";
                 cin >> n;
-                if(n <= 1) cout << "Liczba zmiennych musi byc wieksza od 1!" << endl;
-            } while (n <= 1);
+                if(n <= 0) cout << "Liczba zmiennych musi byc wieksza od 0!" << endl;
+            } while (n <= 0);
             matrix = new double *[n];
             readMatrix(matrix, n);
         } else if(wybor == 1) {
@@ -157,6 +156,7 @@ void podstawowy() {
     for(int k=0; k<n-1; k++) {
         if(matrix[k][k] == 0) {
             cout << "Podstawowa eliminacja gaussa zawiodla, matrix[" << k << "][" << k << "] = 0\n\n";
+            printMatrix(matrix, n);
             return;
         }
         for(int i=k+1; i<n; i++) {
@@ -200,8 +200,8 @@ void pojedynczyWybor() {
             do {
                 cout << "Podaj ilosc zmiennych w ukladzie: ";
                 cin >> n;
-                if(n <= 1) cout << "Liczba zmiennych musi byc wieksza od 1!" << endl;
-            } while (n <= 1);
+                if(n <= 0) cout << "Liczba zmiennych musi byc wieksza od 0!" << endl;
+            } while (n <= 0);
             matrix = new double *[n];
             readMatrix(matrix, n);
         } else if(wybor == 1) {
@@ -236,6 +236,7 @@ void pojedynczyWybor() {
 
         if(matrix[k][k] == 0) {
             cout << "Eliminacja gaussa zawiodla, matrix[" << k << "][" << k << "] = 0\n\n";
+            printMatrix(matrix, n);
             return;
         }
         for(int i=k+1; i<n; i++) {
@@ -279,17 +280,21 @@ void pelnyWybor() {
             do {
                 cout << "Podaj ilosc zmiennych w ukladzie: ";
                 cin >> n;
-                if(n <= 1) cout << "Liczba zmiennych musi byc wieksza od 1!" << endl;
-            } while (n <= 1);
+                if(n <= 0) cout << "Liczba zmiennych musi byc wieksza od 0!" << endl;
+            } while (n <= 0);
             matrix = new double *[n];
             readMatrix(matrix, n);
         } else if(wybor == 1) {
             n = 4;
             matrix = new double *[n];
-            matrix[0] = new double[n+1]{2.25, -2.5, 4, -5.25, -1};
-            matrix[1] = new double[n+1]{-3, -7.5, 6.5, 0, 17};
-            matrix[2] = new double[n+1]{-6.25, -12.5, 0.25, 5.25, 24.25};
-            matrix[3] = new double[n+1]{9, 10, 7, -21, -33};
+//            matrix[0] = new double[n+1]{2.25, -2.5, 4, -5.25, -1};
+//            matrix[1] = new double[n+1]{-3, -7.5, 6.5, 0, 17};
+//            matrix[2] = new double[n+1]{-6.25, -12.5, 0.25, 5.25, 24.25};
+//            matrix[3] = new double[n+1]{9, 10, 7, -21, -33};
+            matrix[0] = new double[n+1]{1,1,1,1,2};
+            matrix[1] = new double[n+1]{1,-1,1,1,-2};
+            matrix[2] = new double[n+1]{1,-1,-1,1,-2};
+            matrix[3] = new double[n+1]{2.333333,1,1,-1,5};
         }
     } while(!(wybor == 1 || wybor == 2));
 
@@ -307,7 +312,7 @@ void pelnyWybor() {
     for(int k=0; k<n-1; k++) {
         int* maxPos = findMax(matrix, n, k, k);
         if(maxPos[0] != maxPos[1] && maxPos[1] != k) {
-            swapRows(matrix, n, maxPos[1], k);
+            swapRows(matrix, maxPos[0], k);
             swapColumns(matrix, n, maxPos[1], k);
 
             int temp = columns[k];
@@ -317,6 +322,7 @@ void pelnyWybor() {
 
         if(matrix[k][k] == 0) {
             cout << "\nEliminacja gaussa zawiodla, matrix[" << k << "][" << k << "] = 0\n\n";
+            printMatrix(matrix, n);
             return;
         }
         for(int i=k+1; i<n; i++) {
@@ -353,6 +359,8 @@ double* postepowanieOdwrotne(double **matrix, int n) {
             res[i] -= (matrix[i][j] * res[j]);
         }
         res[i] /= matrix[i][i];
+        if(abs(res[i]) < 1e-7)
+            res[i] = 0;
     }
     return res;
 }
@@ -380,9 +388,8 @@ void swapColumns(double **matrix, int n, int column1, int column2) {
     }
 }
 
-void swapRows(double **matrix, int n, int row1, int row2) {
+void swapRows(double **matrix, int row1, int row2) {
     double *temp = matrix[row1];
     matrix[row1] = matrix[row2];
     matrix[row2] = temp;
 }
-
